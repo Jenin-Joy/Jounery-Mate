@@ -1,0 +1,137 @@
+{% extends 'Driver/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Submission</title>
+    <style>
+        body {
+            background-color: #f9fafb;
+            min-height: 100vh;
+        }
+
+        table {
+            background-color: white;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: none;
+        }
+
+        th {
+            background-color: #7c3aed;
+            color: white;
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 15px 20px;
+        }
+
+        input[type="file"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="file"]:focus,
+        input[type="text"]:focus {
+            border-color: #7c3aed;
+            outline: none;
+            box-shadow: 0 0 5px rgba(124, 58, 237, 0.3);
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #7c3aed;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #6d28d9;
+        }
+
+        tr:last-child td {
+            padding-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            table {
+                width: 90%;
+                margin: 20px;
+            }
+            th, td {
+                padding: 12px 15px;
+            }
+            input[type="submit"] {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table align="center" border="2">
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="file_photo" id=""></td>
+            </tr>
+            <tr>
+                <td>Count</td>
+                <td><input type="text" name="txt_count" id="count" required pattern="[3-9]{1}"></td>
+            </tr>
+            <tr>
+                <td>Number</td>
+                <td><input type="text" name="txt_number" id="number"
+                     required pattern="^[A-Z]{2}\s\d{2}\s[A-Z]{1}\s\d{1,4}$"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table> 
+    </form>
+<br><br>
+    <table align="center" border="2">
+        <tr>
+            <td>#</td>
+            <td>Photo</td>
+            <td>Count</td>
+            <td>Number</td>
+            <td>Action</td>
+        </tr>
+        {% for i in vehicle %}
+        <tr>            
+            <td>{{forloop.counter}}</td>
+            <td><img src="{{i.file_photo.url}}" width="100" alt=""></td>
+            <td>{{i.vehicle_count}}</td>
+            <td>{{i.vehicle_number}}</td>
+            <td><a href="{% url 'Driver:delvehicle' i.id %}">Delete</a> | <a href="{% url 'Driver:viewassigning' i.id %}">View Assigning</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}

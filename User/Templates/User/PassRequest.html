@@ -1,0 +1,253 @@
+{% extends 'User/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pass Request</title>
+    <style>
+        body {
+            background-color: #f7f9fc;
+            min-height: 100vh;
+        }
+
+        /* Request Form Table */
+        table:first-of-type {
+            background-color: white;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: none;
+        }
+
+        table:first-of-type td {
+            padding: 15px 20px;
+            color: #2d3748;
+            font-weight: 500;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg fill="%236b7280" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+            background-size: 12px;
+        }
+
+        select:focus {
+            border-color: #0d6efd;
+            outline: none;
+            box-shadow: 0 0 5px rgba(56, 161, 105, 0.3);
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #0d6efd;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0d6efd;
+        }
+
+        /* Pass History Table */
+        table:last-of-type {
+            background-color: white;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table:last-of-type td {
+            padding: 15px;
+            border: 1px solid #edf2f7;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .table:last-of-type tr:first-child td {
+            background-color: #0d6efd;
+            color: white !important;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        table:last-of-type tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        table:last-of-type tr:hover:not(:first-child) {
+            background-color: #edf2f7;
+        }
+
+        a {
+            color: #38a169;
+            text-decoration: none;
+            /* font-weight: 500; */
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #2f855a;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            table:first-of-type, table:last-of-type {
+                width: 95%;
+            }
+            table:first-of-type td {
+                display: block;
+                width: 100%;
+                padding: 10px;
+            }
+            table:last-of-type td {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table align="center" border="2" cellpadding="10">
+            <tr>
+                <td>From District</td>
+                <td>
+                    <select name="sel_fdistrict" id="sel_fdistrict">
+                        <option value="">...Select...</option>
+                        {% for i in district %}
+                        <option value="{{i.id}}">{{i.district_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>From place</td>
+                <td>
+                    <select name="txt_fplace" id="txt_fplace">
+                        <option value="">...Select...</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>To District</td>
+                <td>
+                    <select name="sel_tdistrict" id="sel_tdistrict">
+                        <option value="">...Select...</option>
+                        {% for i in district %}
+                        <option value="{{i.id}}">{{i.district_name}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>To place</td>
+                <td>
+                    <select name="txt_tplace" id="txt_tplace">
+                        <option value="">...Select...</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" align="center"><input type="submit" value="Send"></td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <table align="center" cellpadding="10" border="1" class="table">
+        <tr>
+            <td>#</td>
+            <td>Date</td>
+            <td>From Date</td>
+            <td>To Date</td>
+            <td>From</td>
+            <td>To</td>
+            <td>Amount</td>
+            <td>Action</td>
+        </tr>
+        {% for i in passreq %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.passrequest_date}}</td>
+            <td>{{i.passrequest_startdate}}</td>
+            <td>{{i.passrequest_enddate}}</td>
+            <td>{{i.passrequest_fromplace.district.district_name}} - {{i.passrequest_fromplace.place_name}}</td>
+            <td>{{i.passrequest_toplace.district.district_name}} - {{i.passrequest_fromplace.place_name}}</td>
+            <td>
+                {% if i.passrequest_amount == "" %}
+                N/A
+                {% else %}
+                {{i.passrequest_amount}}
+                {% endif %}
+            </td>
+            <td>
+                {% if i.passrequest_status == 1 %}
+                Pass Approved | <a href="{% url 'User:passpayment' i.id %}">Pay</a>
+                {% elif i.passrequest_status == 2 %}
+                Pass Rejected
+                {% elif i.passrequest_status == 3 %}
+                Payment Completed | <a href="{% url 'User:ppass' i.id %}">View Pass</a>
+                {% else %}
+                Pending
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% if msg %}
+    <script>
+        alert("{{ msg }}")
+        window.location = "{% url 'User:PassRequest' %}"
+    </script>
+    {% endif %}
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_fdistrict").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Guest:Ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#txt_fplace").html(data);
+            },
+        });
+    });
+
+    $("#sel_tdistrict").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Guest:Ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#txt_tplace").html(data);
+            },
+        });
+    });
+</script>
+{% endblock content %}

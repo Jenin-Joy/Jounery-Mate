@@ -1,0 +1,147 @@
+{% extends 'User/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <style>
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 28px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            background-color: white;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: none;
+        }
+
+        td {
+            padding: 15px 20px;
+            font-size: 15px;
+            color: #4a5568;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        td:first-child {
+            font-weight: 600;
+            color: #2d3748;
+            width: 40%;
+            text-transform: uppercase;
+        }
+
+        img {
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin: 20px auto;
+            border: 3px solid #edf2f7;
+        }
+
+        .a-tag {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #2b6cb0;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        .a-tag:hover {
+            background-color: #2c5282;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+            padding: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            table {
+                width: 90%;
+            }
+            td {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+            img {
+                width: 150px;
+            }
+            a {
+                width: 100%;
+                margin: 5px 0;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">My Profile</h1>
+    <form action="" method="post">
+        <table border="2" align="center">
+            <tr align="center"> 
+                <td colspan="2"><img src="{{ user.employee_photo.url }}" width="200" alt="User Photo"></td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{user.employee_name}}</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{user.employee_email}}</td>
+            </tr>
+            <tr>
+                <td>Contact</td>
+                <td>{{user.employee_contact}}</td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>{{user.employee_address}}</td>
+            </tr>
+            <tr>
+                <td>District</td>
+                <td>{{user.place.district.district_name}}</td>
+            </tr>
+            <tr>
+                <td>Place</td>
+                <td>{{user.place.place_name}}</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <a href="{% url 'User:Editprofile' %}" class="a-tag">Edit Profile</a>
+                    <a href="{% url 'User:Changepassword' %}" class="a-tag">Change Password</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+    {% if msg %}
+    <script>
+        alert("{{ msg }}")
+        window.location = "{% url 'User:Myprofile' %}"
+    </script>
+    {% endif %}
+</body>
+</html>
+{% endblock content %}

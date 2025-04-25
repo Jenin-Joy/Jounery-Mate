@@ -1,0 +1,198 @@
+{% extends 'User/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table.form-table {
+            margin-bottom: 0;
+        }
+        
+        table.form-table td {
+            padding: 10px;
+        }
+        
+        table.form-table input[type="text"],
+        table.form-table input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"]
+         {
+            background-color: #1355c0;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        select
+        {
+            background-color: #3c4657;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #1355c0;
+        }
+        
+        table.data-table {
+            width: 80%;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table.data-table th {
+            background-color: #1355c0;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        table.data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table.data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        table.data-table tr:hover {
+            background-color: #e9e9e9;
+        }
+        
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table align="center" border="2" cellpadding="10">
+            <tr>
+                <th>Start Date</th>
+                <td><input type="date" name="txt_startdate" id=""></td>
+            </tr>
+            <tr>
+                <th>End Date</th>
+                <td><input type="date" name="txt_enddate" id=""></td>
+            </tr>
+            <tr>
+            <td colspan="2" align="center"><input type="submit" value="Send"></td>
+            </tr>
+        </table>
+    </form>
+    <br>
+
+    <table align="center" border="2" cellpadding="10" class="data-table">
+        <tr>
+            <th>#</th>
+            <th>Vehicle</th>
+            <th>Driver</th>
+            <th>Driver Contact</th>
+            <th>Amount</th>
+            <th>Request Date</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Action</th>
+        </tr>
+        {% for i in cab %}
+        <tr>            
+            <td>{{forloop.counter}}</td>
+            <td>
+                {% if i.vehicle == None %}
+                Pending
+                {% else %}
+                {{i.vehicle.vehicle_number}}
+                {% endif %}
+            </td>  
+            <td>
+                {% if i.vehicle == None %}
+                Pending
+                {% else %}
+                {{i.vehicle.driver.driver_name}}  
+                {% endif %}
+            </td> 
+            <td>
+                {% if i.cabassign_status != 3 %}
+                Pending
+                {% else %}
+                {{i.vehicle.driver.driver_contact}}  
+                {% endif %}
+            </td> 
+            <td>
+                {% if i.cabassign_amount == '' %}
+                Pending
+                {% else %}
+                {{i.cabassign_amount}}  
+                {% endif %}
+            </td>  
+            <td>{{i.cabassign_date}}</td>
+            <td>{{i.cabassign_startdate}}</td>  
+            <td>{{i.cabassign_enddate}}</td>  
+            <td>  
+                {% if i.cabassign_status == 1 %}  
+                Cab Assigned | <a href="{% url 'User:cabpayment' i.id %}">Cab Payment</a>
+                {% elif i.cabassign_status == 2 %}      
+                Cab Rejected
+                {% elif i.cabassign_status == 3 %}  
+                Payment Completed | <a href="{% url 'User:rating' i.vehicle.driver.id %}">Cab Rating</a>
+                {% else %}  
+                Assign Pending
+                {% endif %}  
+            </td>  
+        </tr>  
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}

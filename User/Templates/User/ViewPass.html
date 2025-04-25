@@ -1,0 +1,85 @@
+{% extends 'User/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Pass</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .pass-container {
+            width: 400px;
+            border: 2px solid black;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 5px 5px 10px gray;
+            background: white;
+        }
+        .pass-header { font-size: 20px; font-weight: bold; }
+        .pass-details { margin-top: 10px; text-align: left; }
+        .pass-footer { margin-top: 15px; font-size: 12px; }
+        .print-btn {
+            margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .print-btn:hover {
+            background-color: #0056b3;
+        }
+        @media print {
+            .print-btn { display: none; } /* Hide button when printing */
+        }
+        .cont{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <script>
+        function printPass() {
+            window.print(); // Trigger browser print dialog
+        }
+    </script>
+</head>
+<body>
+<div class="cont">
+    {% if data %}
+<div class="pass-container">
+    <div class="pass-header">🚨 Emergency Pass 🚨</div>
+    <hr>
+    <div class="pass-details">
+        <p><strong>From:</strong> {{ data.from_place.district.district_name }} - {{ data.from_place.place_name }}</p>
+        <p><strong>To:</strong> {{ data.to_place.district.district_name }} - {{ data.to_place.place_name }}</p>
+        <p><strong>Employee:</strong> {{ data.employee.employee_name }}</p>
+        <p><strong>Amount:</strong> ₹{{ data.emergencypass_amount }}</p>
+        <p><strong>Validity:</strong> {{ data.emergencypass_validity }}</p>
+        <p><strong>Status:</strong> Approved</p>
+    </div>
+    <button class="print-btn" onclick="printPass()">🖨️ Print Pass</button>
+</div>
+{% else %}
+<div class="pass-container">
+    <div class="pass-header"> Pass </div>
+    <hr>
+    <div class="pass-details">
+        <p><strong>From:</strong> {{ pdata.passrequest_fromplace.district.district_name }} - {{ pdata.passrequest_fromplace.place_name }}</p>
+        <p><strong>To:</strong> {{ pdata.passrequest_toplace.district.district_name }} - {{ pdata.passrequest_toplace.place_name }}</p>
+        <p><strong>Employee:</strong> {{ pdata.employee.employee_name }}</p>
+        <p><strong>Amount:</strong> ₹{{ pdata.passrequest_amount }}</p>
+        <p><strong>Validity:</strong> {{ pdata.passrequest_startdate }} - {{ pdata.passrequest_enddate }}</p>
+        <p><strong>Status:</strong> Approved</p>
+    </div>
+    <button class="print-btn" onclick="printPass()">🖨️ Print Pass</button>
+</div>
+{% endif %}
+</div>
+
+</body>
+</html>
+{% endblock content %}

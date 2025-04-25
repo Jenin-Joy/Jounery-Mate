@@ -1,0 +1,111 @@
+{% extends 'User/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint</title>
+    <style>
+        body {
+            background-color: #f1f3f5;
+            min-height: 100vh;
+        }
+
+        table {
+            background-color: white;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: none;
+        }
+
+        th {
+            background-color: #0d6efd;
+            color: white;
+            padding: 16px 24px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 16px 24px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 8px rgba(255, 107, 107, 0.2);
+            outline: none;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #0d6efd;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0d6efd;
+        }
+
+        tr:last-child td {
+            padding-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            table {
+                width: 90%;
+                margin: 20px;
+            }
+            th, td {
+                padding: 12px 16px;
+            }
+            input[type="submit"] {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table align="center" border="2">
+            <tr>
+                <td>Subject</td>
+                <td><input type="text" name="txt_subject" id="subject"></td>
+            </tr>
+            <tr>
+                <td>Content</td>
+                <td><input type="text" name="txt_content" id="content"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Send"></td>
+            </tr>
+        </table> 
+    </form>
+</body>
+</html>
+{% endblock content %}

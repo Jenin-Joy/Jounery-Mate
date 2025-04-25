@@ -1,0 +1,235 @@
+{% extends 'Admin/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table.form-table {
+            margin-bottom: 0;
+        }
+        
+        table.form-table td {
+            padding: 10px;
+        }
+        
+        table.form-table input[type="text"],
+        table.form-table input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"]
+         {
+            background-color: #1355c0;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        select
+        {
+            background-color: #3c4657;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #1355c0;
+        }
+        
+        table.data-table {
+            width: 80%;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table.data-table th {
+            background-color: #1355c0;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        table.data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table.data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        table.data-table tr:hover {
+            background-color: #e9e9e9;
+        }
+        
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        .scroll-cont{
+            width: 100%;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h3>New Driver</h3>
+    <div class="scroll-cont">
+        <table border="1" cellpadding="10" class="data-table">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Address</th>
+                <th>Photo</th>
+                <th>Proof</th>
+                <th>Licence</th>
+                <th>Distrct</th>
+                <th>Place</th>
+                <th>Action</th>
+            </tr>
+            {% for i in newdriver %}        
+            <tr>            
+                <td>{{forloop.counter}}</td>
+                <td>{{i.driver_name}}</td>            
+                <td>{{i.driver_email}}</td>            
+                <td>{{i.driver_contact}}</td>            
+                <td>{{i.driver_address}}</td>            
+                <td><img src="{{i.driver_photo.url}}" width="100" alt=""></td>            
+                <td><img src="{{i.driver_proof.url}}" width="100" alt=""></td>            
+                <td><img src="{{i.driver_license.url}}" width="100" alt=""></td>            
+                <td>{{i.place.district.district_name}}</td>            
+                <td>{{i.place.place_name}}</td>            
+                <td>
+                    <a href="{% url 'Admin:verifydriver' i.id 1 %}">Accept</a>
+                    <a href="{% url 'Admin:verifydriver' i.id 2 %}">Reject</a>                
+                </td>            
+            </tr>        
+            {% endfor %}        
+        </table>
+    </div>
+    <br><br>
+
+    <h3>Verified Driver</h3>
+    <div class="scroll-cont">
+        <table border="1" cellpadding="10" class="data-table">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Address</th>
+                <th>Photo</th>
+                <th>Proof</th>
+                <th>Licence</th>
+                <th>Distrct</th>
+                <th>Place</th>
+                <th>Action</th>
+            </tr>
+            {% for i in verifieddriver %}        
+            <tr>            
+                <td>{{forloop.counter}}</td>            
+                <td>{{i.driver_name}}</td>            
+                <td>{{i.driver_email}}</td>            
+                <td>{{i.driver_contact}}</td>            
+                <td>{{i.driver_address}}</td>            
+                <td><img src="{{i.driver_photo.url}}" width="100" alt=""></td>            
+                <td><img src="{{i.driver_proof.url}}" width="100" alt=""></td>            
+                <td><img src="{{i.driver_license.url}}" width="100" alt=""></td>            
+                <td>{{i.place.district.district_name}}</td>            
+                <td>{{i.place.place_name}}</td>            
+                <td>                
+                    <a href="{% url 'Admin:verifydriver' i.id 2 %}">Reject</a>                
+                </td>            
+            </tr>        
+            {% endfor %}        
+        </table> 
+    </div>   
+    <br><br>
+        
+    <h3>Rejected Driver</h3>
+    <div class="scroll-cont">
+        <table border="1" cellpadding="10" class="data-table">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Contact</th>
+                <th>Address</th>
+                <th>Photo</th>
+                <th>Proof</th>
+                <th>Licence</th>
+                <th>Distrct</th>
+                <th>Place</th>
+                <th>Action</th>
+            </tr>
+            {% for i in rejecteddriver %}        
+            <tr>            
+                <td>{{forloop.counter}}</td>            
+                <td>{{i.driver_name}}</td>            
+                <td>{{i.driver_email}}</td>            
+                <td>{{i.driver_contact}}</td>            
+                <td>{{i.driver_address}}</td>            
+                <td><img src="{{i.driver_photo.url}}" width="100" alt=""></td>            
+                <td><img src="{{i.driver_proof.url}}" width="100" alt=""></td>            
+                <td><img src="{{i.driver_license.url}}" width="100" alt=""></td>            
+                <td>{{i.place.district.district_name}}</td>            
+                <td>{{i.place.place_name}}</td>            
+                <td>                
+                    <a href="{% url 'Admin:verifydriver' i.id 1 %}">Accept</a>                
+                </td>            
+            </tr>        
+            {% endfor %}        
+        </table>  
+    </div>          
+</body>
+</html>
+
+{% endblock content %}

@@ -1,0 +1,196 @@
+{% extends 'Guest/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Registration</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+
+        table {
+            background-color: white;
+            border-collapse: collapse;
+            width: 50%;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 16px;
+            vertical-align: top;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        textarea {
+            height: 90px;
+            resize: vertical;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #ecf0f1;
+        }
+
+        select {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg fill="%233498db" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+            background-size: 12px;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                width: 95%;
+            }
+            th, td {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Employee</h1>  
+    <form action="" method="post" enctype="multipart/form-data">  
+        {% csrf_token %}  
+        <br>  
+        <table border="2" align="center" class="data-table">  
+            <tr>  
+                <td>Name</td>  
+                <td><input type="text" name="txt_name" id="name" pattern="^[A-Z]+[a-zA-Z ]*$" 
+                    required placeholder="Enter your full name"></td>  
+            </tr>   
+            <tr>
+                <td>Email</td>
+                <td><input type="email" name="txt_email" id="email" 
+                    required placeholder="Enter your email address"></td>
+            </tr>
+            <tr>  
+                <td>Contact</td>
+                <td><input type="text" name="txt_contact" id="contact" pattern="[7-9]{1}[0-9]{9}" 
+                    required placeholder="Enter your phone number"></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><textarea name="txt_address" id="" required></textarea></td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="file_photo" id="" required></td>
+            </tr>
+            <tr>
+                <td>Proof</td>
+                <td><input type="file" name="file_proof" id="" required></td>
+            </tr>
+            <tr>
+                <td>District</td>
+                <td><select name="sel_district" id="sel_district">
+                    <option value="">---select----</option>
+                    {% for i in result %}
+                    <option value="{{i.id}}">{{i.district_name}}</option>
+                    {%endfor%}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Place</td>
+               <td><select name="sel_place" id="sel_place">
+                    <option value="">----select----</option>
+                </select></td> 
+            </tr>
+            <tr>
+                <td>Transportation Type</td>
+               <td><select name="sel_transportation" id="sel_transportation">
+                    <option value="">----select----</option>
+                    {% for i in t %}
+                    <option value="{{i.id}}">{{i.transportationtype_name}}</option>
+                    {%endfor%}
+                </select></td> 
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="txt_password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                    required placeholder="Create a strong password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Guest:Ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#sel_place").html(data);
+            },
+        });
+    });
+</script>
+{% endblock content %}

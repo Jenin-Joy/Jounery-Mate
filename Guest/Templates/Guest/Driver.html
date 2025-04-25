@@ -1,0 +1,167 @@
+{% extends 'Guest/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        table {
+            background-color: white;
+            border-collapse: collapse;
+            width: 50%;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select,
+        input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Driver</h1>  
+    <form action="" method="post" enctype="multipart/form-data">  
+        {% csrf_token %}  
+        <br>  
+        <table border="2" align="center">     
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="txt_name" id="name" pattern="^[A-Z]+[a-zA-Z ]*$" required placeholder="Enter your full name"></td>
+            </tr>
+            <tr>  
+                <td>Email</td>
+                <td><input type="email" name="txt_email" id="email"></td>
+            </tr>
+            <tr>  
+                <td>Contact</td>
+                <td><input type="text" name="txt_contact" id="contact" pattern="[7-9]{1}[0-9]{9}" 
+                    required placeholder="Enter your phone number"></td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td><textarea name="txt_address" id="" required></textarea></td>
+            </tr>
+            <tr>
+                <td>License</td>
+                <td><input type="file" name="file_license" id="" required></td>
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="file_photo" id="" required></td>
+            </tr>
+            <tr>
+                <td>Proof</td>
+                <td><input type="file" name="file_proof" id="" required></td>
+            </tr>
+            <tr>
+                <td>District</td>
+                <td><select name="sel_district" id="sel_district">
+                    <option value="">---select----</option>
+                    {% for i in result %}
+                    <option value="{{i.id}}">{{i.district_name}}</option>
+                    {%endfor%}
+                </select></td>
+            </tr>
+            <tr>
+                <td>Place</td>
+               <td><select name="sel_place" id="sel_place">
+                    <option value="">----select----</option>
+                </select></td> 
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                    required placeholder="Create a strong password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Guest:Ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#sel_place").html(data);
+            },
+        });
+    });
+</script>
+{% endblock content %}

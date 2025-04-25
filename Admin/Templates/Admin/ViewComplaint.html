@@ -1,0 +1,152 @@
+{% extends 'Admin/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table.form-table {
+            margin-bottom: 0;
+        }
+        
+        table.form-table td {
+            padding: 10px;
+        }
+        
+        table.form-table input[type="text"],
+        table.form-table input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"]
+         {
+            background-color: #1355c0;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        select
+        {
+            background-color: #3c4657;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #1355c0;
+        }
+        
+        table.data-table {
+            width: 80%;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table.data-table th {
+            background-color: #1355c0;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        table.data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table.data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        table.data-table tr:hover {
+            background-color: #e9e9e9;
+        }
+        
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <table cellpadding="10" border="1" class="data-table">
+        <tr>
+            <th>#</th>
+            <th>Employee</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Date</th>
+            <th>Reply</th>
+        </tr>
+        {% for i in complaint %}        
+        <tr>            
+            <td>{{forloop.counter}}</td>            
+            <td>{{i.employee.employee_name}}</td>            
+            <td>{{i.complaint_title}}</td>            
+            <td>{{i.complaint_content}}</td>            
+            <td>{{i.complaint_date}}</td>            
+            <td>                
+                {% if i.complaint_status == 0 %}                
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="reply" id="reply" placeholder="Reply">
+                    <input type="hidden" name="id" id="id" value="{{i.id}}">                    
+                    <input type="submit" value="Reply">                    
+                </form>     
+                {% else %}                
+                {{i.complaint_reply}}                
+                {% endif %}                
+            </td>                      
+        </tr>        
+        {% endfor %}        
+    </table>    
+</body>
+</html>
+
+{% endblock content %}

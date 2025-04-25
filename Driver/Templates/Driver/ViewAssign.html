@@ -1,0 +1,31 @@
+{% extends 'Driver/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table align="center" border="2" cellpadding="10">
+        <tr>
+            <td>#</td>
+            <td>Employee</td>
+            <td>District</td>
+            <td>Place</td>
+            <td>Contact</td>
+        </tr>
+        {% for i in cab %}        
+        <tr>            
+            <td>{{forloop.counter}}</td>            
+            <td>{{i.employee.employee_name}}</td>            
+            <td>{{i.employee.place.district.district_name}}</td>            
+            <td>{{i.employee.place.place_name}}</td>            
+            <td>{{i.employee.employee_contact}}</td>            
+        </tr>        
+        {% endfor %}        
+    </table>
+</body>
+</html>
+{% endblock content %}

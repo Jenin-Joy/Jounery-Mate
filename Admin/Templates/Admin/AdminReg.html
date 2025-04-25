@@ -1,0 +1,174 @@
+{% extends 'Admin/Head.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto 30px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table.form-table {
+            margin-bottom: 0;
+        }
+        
+        table.form-table td {
+            padding: 10px;
+        }
+        
+        table.form-table input[type="text"],
+        table.form-table input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"] {
+            background-color: #1355c0;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #1355c0;
+        }
+        
+        table.data-table {
+            width: 80%;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        table.data-table th {
+            background-color: #1355c0;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        table.data-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table.data-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        table.data-table tr:hover {
+            background-color: #e9e9e9;
+        }
+        
+        
+        .invalid-feedback {
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+
+        a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Registration</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table class="form-table" border="0" class="data-table">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" name="name" id="name" pattern="^[A-Z]+[a-zA-Z ]*$" 
+                    required placeholder="Enter your full name"></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" name="email" id="email" 
+                    required placeholder="Enter your email address">
+                    <div class="invalid-feedback">
+                        Please enter a valid email address
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password" id="password"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                    required placeholder="Create a strong password">
+                    <div class="invalid-feedback">
+                        Password must include uppercase, lowercase, number, and 8+ characters
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+    
+    <table class="data-table" border="0" class="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in reg %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.admin_name}}</td>
+                <td>{{i.admin_email}}</td>
+                <td>••••••••</td>
+                <td><a href="{% url 'Admin:deladmin' i.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+{% endblock content %}

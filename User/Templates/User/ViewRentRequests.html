@@ -1,0 +1,123 @@
+{% extends 'User/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental History</title>
+    <style>
+        body {
+            background-color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        table {
+            background-color: white;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: none;
+        }
+
+        th {
+            background-color: #3b82f6;
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            font-size: 14px;
+            color: #4b5563;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:hover:not(:first-child) {
+            background-color: #f1f5f9;
+        }
+
+        td:contains('Pending') {
+            color: #e11d48;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                width: 95%;
+            }
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            th, td {
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table align="center" border="2">
+        <tr>
+            <th>#</th>
+            <th>Vehicle number</th>
+            <th>Amount</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Action</th>
+        </tr>
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>
+                {% if i.rentvehicle_number == "" %}
+                Pending
+                {% else %}
+                {{i.rentvehicle_number}}
+                {% endif %}
+            </td>
+            <td>
+                {% if i.rentvehicle_amount == "" %}
+                Pending
+                {% else %}
+                {{i.rentvehicle_amount}}
+                {% endif %}
+            </td>
+            <td>{{i.rentvehicle_startdate}}</td>
+            <td>{{i.rentvehicle_enddate}}</td>
+            <td>
+                {% if i.rentvehicle_status == 1 %}
+                Approved | <a href="{% url 'User:rentpayment' i.id %}">Payment</a>
+                {% elif i.rentvehicle_status == 2 %}
+                Rejected
+                {% elif i.rentvehicle_status == 3 %}
+                Payment Completed
+                {% else %}
+                Pending
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,118 @@
+{% extends 'Guest/Head.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e9ecef;
+            min-height: 100vh;
+            padding-top: 150px;
+        }
+
+        table {
+            background-color: white;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: none;
+        }
+
+        th {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px 20px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #6c757d;
+            outline: none;
+            box-shadow: 0 0 5px rgba(108, 117, 125, 0.3);
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #6c757d;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #5c636a;
+        }
+
+        tr:last-child td {
+            padding-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            table {
+                width: 90%;
+                margin: 20px;
+            }
+            th, td {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table border="2" align="center">
+            <tr>
+                <td>Email</td>
+                <td><input type="text" name="email" id="email"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2"><input type="submit" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+    {% if msg %}
+    <script>
+        alert("{{msg}}")
+        window.location="{% url 'Guest:login' %}"
+    </script>
+    {% endif %}
+</body>
+</html>
+{% endblock content %}

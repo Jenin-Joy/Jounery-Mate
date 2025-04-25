@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table border="2" align="center">
+            <tr>
+                <th>Name</th>
+                <td><input type="text" name="txt_name" ></td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td><input type="email" name="txt_email"  ></td>
+            </tr>
+            <tr>
+                <th>Contact</th>
+                <td><input type="text" name="txt_contact"  ></td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td><input type="password" name="txt_password" ></td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td><textarea name="txt_address" id=""></textarea></td>
+            </tr>
+            <tr>
+                <th>District</th>
+                <td><select name="sel_district" id="sel_district">
+                    <option value="">---select----</option>
+                    {% for i in result %}
+                    <option value="{{i.id}}">{{i.district_name}}</option>
+                    {%endfor%}zz
+                </select></td>
+            </tr>
+            <tr>
+                <th>Place</th>
+               <td><select name="sel_place" id="sel_place">
+                    <option value="">---select----</option>
+                </select></td> 
+            </tr>
+            <tr>
+                <td>Photo</td>
+                <td><input type="file" name="file_photo" id=""></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"><input type="submit" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("#sel_district").change(function () {
+        var did = $(this).val();
+        var ur = "{% url 'Guest:Ajaxplace' %}"
+        $.ajax({
+            url: ur,
+            data: { did: did, },
+            success: function (data) {
+                $("#sel_place").html(data);
+            },
+        });
+    });
+</script>
